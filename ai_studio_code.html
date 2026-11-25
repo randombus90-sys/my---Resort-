@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VanaAura Sanctuary — Luxury Rainforest Resort | Munnar, Kerala</title>
+
+  <!-- Google Fonts: Cormorant Garamond (Luxury Serif) & Plus Jakarta Sans (Clean Modern Sans) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            obsidian: '#050a08',
+            forest: '#091410',
+            emeraldDeep: '#0d221a',
+            emeraldGlow: '#10b981',
+            gold: '#d4af37',
+            goldLight: '#f3e5ab',
+          },
+          fontFamily: {
+            serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+          },
+          boxShadow: {
+            goldGlow: '0 0 30px -5px rgba(212, 175, 55, 0.45)',
+            emeraldGlow: '0 0 35px -8px rgba(16, 185, 129, 0.35)',
+          },
+        },
+      },
+    };
+  </script>
+
+  <!-- Three.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      max-width: 100%;
+      overflow-x: hidden;
+      background-color: #050a08;
+      color: #e6ece9;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    /* Custom subtle scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #050a08;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #10b981, #d4af37);
+      border-radius: 9999px;
+    }
+
+    /* Glassmorphism utility with gold/emerald hairline */
+    .glass-card {
+      background: rgba(11, 23, 18, 0.62);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(212, 175, 55, 0.22);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+
+    .glass-card-emerald {
+      background: rgba(9, 22, 17, 0.68);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    /* Gold shimmer text gradient */
+    .text-gold-gradient {
+      background: linear-gradient(135deg, #f3e5ab 0%, #d4af37 50%, #aa8220 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Scroll reveal animations */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Dark date picker icon styling */
+    input[type="date"]::-webkit-calendar-picker-indicator {
+      filter: invert(0.85) sepia(0.4) saturate(2) hue-rotate(10deg);
+      cursor: pointer;
+    }
+
+    /* Subtle pulse ring for Book button */
+    @keyframes glowPulse {
+      0%, 100% { box-shadow: 0 0 22px rgba(212, 175, 55, 0.38), 0 0 40px rgba(16, 185, 129, 0.18); }
+      50% { box-shadow: 0 0 34px rgba(212, 175, 55, 0.65), 0 0 55px rgba(16, 185, 129, 0.32); }
+    }
+    .btn-glow {
+      animation: glowPulse 3.2s infinite ease-in-out;
+    }
+  </style>
+</head>
+<body class="antialiased selection:bg-gold/30 selection:text-goldLight">
+
+  <!-- ==================== NAVIGATION ==================== -->
+  <header id="navbar" class="fixed top-0 inset-x-0 z-50 transition-all duration-500">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        <!-- Brand Logo -->
+        <a href="#hero" class="flex items-center gap-3 group">
+          <div class="w-10 h-10 rounded-full border border-gold/50 bg-forest/80 flex items-center justify-center shadow-goldGlow group-hover:scale-105 transition-transform">
+            <svg class="w-5 h-5 text-gold" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3L4 14h6l-2 7 12-11h-6l2-7z" />
+            </svg>
+          </div>
+          <div>
+            <span class="font-serif text-xl sm:text-2xl font-semibold tracking-wider text-gold-gradient block leading-none">VanaAura</span>
+            <span class="text-[10px] uppercase tracking-[0.28em] text-emerald-300/80 block mt-0.5">Munnar • Kerala</span>
+          </div>
+        </a>
+
+        <!-- Desktop Nav -->
+        <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-300">
+          <a href="#villas" class="hover:text-gold transition-colors">Villas &amp; Suites</a>
+          <a href="#experiences" class="hover:text-gold transition-colors">Experiences</a>
+          <a href="#booking" class="hover:text-gold transition-colors">Reservations</a>
+          <a href="#footer" class="hover:text-gold transition-colors">Location</a>
+          <a href="#booking" class="px-5 py-2.5 rounded-full border border-gold/60 text-goldLight bg-gold/10 hover:bg-gold hover:text-obsidian transition-all duration-300 shadow-goldGlow">
+            Reserve Now
+          </a>
+        </nav>
+
+        <!-- Mobile Menu Button -->
+        <button id="mobile-menu-btn" aria-label="Toggle Menu" class="md:hidden p-2 rounded-lg border border-gold/30 text-goldLight bg-forest/80 backdrop-blur-md">
+          <svg id="menu-icon-open" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <svg id="menu-icon-close" class="w-6 h-6 hidden" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Dropdown -->
+    <div id="mobile-menu" class="hidden md:hidden mx-4 mb-4 rounded-2xl glass-card p-5 space-y-3 text-center">
+      <a href="#villas" class="mobile-nav-link block py-2 text-gray-200 hover:text-gold transition">Villas &amp; Suites</a>
+      <a href="#experiences" class="mobile-nav-link block py-2 text-gray-200 hover:text-gold transition">Experiences</a>
+      <a href="#booking" class="mobile-nav-link block py-2 text-gray-200 hover:text-gold transition">Reservations</a>
+      <a href="#footer" class="mobile-nav-link block py-2 text-gray-200 hover:text-gold transition">Location</a>
+      <a href="#booking" class="mobile-nav-link block w-full py-3 rounded-full bg-gradient-to-r from-gold to-amber-500 text-obsidian font-semibold">Book Your Stay</a>
+    </div>
+  </header>
+
+  <!-- ==================== 1. FULL-SCREEN INTERACTIVE 3D HERO ==================== -->
+  <section id="hero" class="relative min-h-screen w-full flex items-center justify-center overflow-hidden pt-20 pb-28">
+    <!-- Three.js Canvas Container -->
+    <div id="hero-canvas-container" class="absolute inset-0 w-full h-full z-0"></div>
+
+    <!-- Atmospheric Dark Vignette Overlays -->
+    <div class="absolute inset-0 bg-gradient-to-b from-obsidian/70 via-obsidian/30 to-obsidian z-[1] pointer-events-none"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_25%,rgba(5,10,8,0.82)_100%)] z-[1] pointer-events-none"></div>
+
+    <!-- Hero Content -->
+    <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 text-center">
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card-emerald text-xs sm:text-sm uppercase tracking-[0.22em] text-emerald-300 mb-6">
+        <span class="w-2 h-2 rounded-full bg-emeraldGlow animate-ping"></span>
+        <span>Munnar • Western Ghats, Kerala</span>
+      </div>
+
+      <h1 class="font-serif text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold tracking-tight leading-[1.06] text-white mb-6 drop-shadow-[0_10px_30px_rgba(0,0,0,0.9)]">
+        Experience <span class="italic font-normal text-gold-gradient">Timeless</span> Luxury
+      </h1>
+
+      <p class="max-w-2xl mx-auto text-base sm:text-lg md:text-xl text-gray-300/90 font-light leading-relaxed mb-10 px-2">
+        Suspended above emerald tea valleys and ancient cloud forests, VanaAura Sanctuary blends architectural serenity with sacred Ayurvedic renewal.
+      </p>
+
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="#booking" class="btn-glow w-full sm:w-auto px-8 py-4 rounded-full bg-gradient-to-r from-gold via-amber-300 to-gold text-obsidian font-semibold text-sm sm:text-base tracking-wide uppercase hover:scale-105 transition-transform duration-300">
+          Book Your Stay
+        </a>
+        <a href="#villas" class="w-full sm:w-auto px-8 py-4 rounded-full glass-card text-goldLight font-medium text-sm sm:text-base tracking-wide uppercase hover:border-gold/60 hover:bg-white/5 transition-all duration-300">
+          Explore Villas
+        </a>
+      </div>
+    </div>
+
+    <!-- Scroll Down Indicator -->
+    <a href="#booking" class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 text-xs uppercase tracking-[0.25em] text-gray-400 hover:text-gold transition">
+      <span>Scroll</span>
+      <span class="w-5 h-8 rounded-full border border-gold/40 flex items-start justify-center p-1">
+        <span class="w-1 h-2 bg-gold rounded-full animate-bounce"></span>
+      </span>
+    </a>
+  </section>
+
+  <!-- ==================== 4. INTERACTIVE FLOATING BOOKING & INQUIRY BAR ==================== -->
+  <section id="booking" class="relative z-20 -mt-14 sm:-mt-16 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+    <div class="glass-card rounded-3xl p-5 sm:p-7 lg:p-8 shadow-2xl border border-gold/30">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-5 pb-4 border-b border-white/10">
+        <div>
+          <span class="text-xs uppercase tracking-[0.24em] text-emerald-400 font-semibold">Private Concierge Desk</span>
+          <h2 class="font-serif text-2xl sm:text-3xl text-white">Reserve Your Mountain Sanctuary</h2>
+        </div>
+        <p class="text-xs sm:text-sm text-gray-400">Best Rate Guaranteed • Complimentary Helipad / Kochi Transfer</p>
+      </div>
+
+      <form id="booking-form" novalidate class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 items-end">
+        <!-- Check-in Date -->
+        <div>
+          <label for="checkin" class="block text-xs uppercase tracking-wider text-goldLight/90 mb-2">Check-in Date</label>
+          <input type="date" id="checkin" required
+            class="w-full px-4 py-3 rounded-xl bg-obsidian/80 border border-emerald-500/30 text-white text-sm focus:outline-none focus:border-gold transition" />
+        </div>
+
+        <!-- Check-out Date -->
+        <div>
+          <label for="checkout" class="block text-xs uppercase tracking-wider text-goldLight/90 mb-2">Check-out Date</label>
+          <input type="date" id="checkout" required
+            class="w-full px-4 py-3 rounded-xl bg-obsidian/80 border border-emerald-500/30 text-white text-sm focus:outline-none focus:border-gold transition" />
+        </div>
+
+        <!-- Guests -->
+        <div>
+          <label for="guests" class="block text-xs uppercase tracking-wider text-goldLight/90 mb-2">Guests</label>
+          <select id="guests"
+            class="w-full px-4 py-3 rounded-xl bg-obsidian/80 border border-emerald-500/30 text-white text-sm focus:outline-none focus:border-gold transition">
+            <option value="1 Adult">1 Adult</option>
+            <option value="2 Adults" selected>2 Adults</option>
+            <option value="2 Adults, 1 Child">2 Adults, 1 Child</option>
+            <option value="4 Adults">4 Adults (Family / Group)</option>
+            <option value="6 Guests (Private Buyout)">6 Guests (Pavilion)</option>
+          </select>
+        </div>
+
+        <!-- Villa Type -->
+        <div>
+          <label for="villa-type" class="block text-xs uppercase tracking-wider text-goldLight/90 mb-2">Villa Type</label>
+          <select id="villa-type"
+            class="w-full px-4 py-3 rounded-xl bg-obsidian/80 border border-emerald-500/30 text-white text-sm focus:outline-none focus:border-gold transition">
+            <option value="Infinity Pool Villa" data-rate="42000">Infinity Pool Villa (₹42,000/nt)</option>
+            <option value="Forest Canopy Suite" data-rate="34000">Forest Canopy Suite (₹34,000/nt)</option>
+            <option value="Presidential Pavilion" data-rate="78000">Presidential Pavilion (₹78,000/nt)</option>
+          </select>
+        </div>
+
+        <!-- Submit Button -->
+        <div>
+          <button type="submit"
+            class="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-gold to-amber-400 text-obsidian font-semibold text-sm uppercase tracking-wider hover:brightness-110 active:scale-[0.98] transition-all shadow-goldGlow">
+            Check &amp; Book
+          </button>
+        </div>
+      </form>
+
+      <!-- Inline Validation Error Message -->
+      <p id="booking-error" class="hidden mt-3 text-sm text-rose-400 flex items-center gap-2">
+        <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+        </svg>
+        <span id="booking-error-text"></span>
+      </p>
+    </div>
+  </section>
+
+  <!-- ==================== 2. VILLAS & SUITES SHOWCASE ==================== -->
+  <section id="villas" class="py-24 sm:py-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+    <div class="text-center max-w-2xl mx-auto mb-16 reveal">
+      <span class="text-xs uppercase tracking-[0.28em] text-emerald-400 font-semibold">Private Residences</span>
+      <h2 class="font-serif text-3xl sm:text-5xl font-semibold text-white mt-3 mb-4">
+        Sanctuaries Crafted in <span class="text-gold-gradient italic font-normal">Stone &amp; Mist</span>
+      </h2>
+      <p class="text-gray-400 text-sm sm:text-base leading-relaxed">
+        Each residence is oriented toward the dramatic peaks of Munnar, offering heated plunge pools, hand-carved teak interiors, and dedicated 24-hour butler service.
+      </p>
+    </div>
+
+    <!-- 3-Column Responsive Grid -->
+    <div id="villas-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Cards injected cleanly via JS or structured directly; rendered directly for SEO & clarity -->
+
+      <!-- Card 1: Infinity Pool Villa -->
+      <article class="reveal glass-card rounded-3xl overflow-hidden group flex flex-col justify-between transition-all duration-500 hover:-translate-y-2 hover:border-gold/50">
+        <div>
+          <div class="relative h-64 sm:h-72 overflow-hidden bg-emeraldDeep">
+            <img
+              src="https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?auto=format&fit=crop&w=1200&q=85"
+              alt="Infinity Pool Villa overlooking misty hills"
+              loading="lazy"
+              onerror="this.style.opacity='0.2'"
+              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/20 to-transparent"></div>
+            <div class="absolute top-4 right-4 px-3.5 py-1.5 rounded-full glass-card text-xs font-semibold text-goldLight border border-gold/40">
+              ₹42,000 <span class="text-gray-300 font-normal">/ night</span>
+            </div>
+            <div class="absolute bottom-4 left-4 flex items-center gap-2 text-xs text-emerald-300 uppercase tracking-widest">
+              <span class="w-1.5 h-1.5 rounded-full bg-emeraldGlow"></span>
+              <span>1,650 sq.ft • Heated Pool</span>
+            </div>
+          </div>
+
+          <div class="p-6 sm:p-7">
+            <h3 class="font-serif text-2xl sm:text-3xl text-white mb-2 group-hover:text-goldLight transition-colors">Infinity Pool Villa</h3>
+            <p class="text-sm text-gray-400 leading-relaxed mb-5">
+              Cantilevered above the tea valleys with a temperature-controlled infinity edge pool, sunken fire-pit deck, and panoramic glass bath.
+            </p>
+          </div>
+        </div>
+
+        <div class="px-6 pb-7 pt-0 flex items-center justify-between gap-3">
+          <button onclick="openVillaModal('infinity')" class="w-full py-3 px-5 rounded-xl border border-gold/40 text-goldLight text-sm font-medium hover:bg-gold hover:text-obsidian transition-all duration-300 flex items-center justify-center gap-2">
+            <span>View Details</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </button>
+        </div>
+      </article>
+
+      <!-- Card 2: Forest Canopy Suite -->
+      <article class="reveal glass-card-emerald rounded-3xl overflow-hidden group flex flex-col justify-between transition-all duration-500 hover:-translate-y-2 hover:border-emerald-400/60" style="transition-delay: 100ms;">
+        <div>
+          <div class="relative h-64 sm:h-72 overflow-hidden bg-emeraldDeep">
+            <img
+              src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1200&q=85"
+              alt="Forest Canopy Suite luxury interior"
+              loading="lazy"
+              onerror="this.style.opacity='0.2'"
+              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/20 to-transparent"></div>
+            <div class="absolute top-4 right-4 px-3.5 py-1.5 rounded-full glass-card text-xs font-semibold text-goldLight border border-gold/40">
+              ₹34,000 <span class="text-gray-300 font-normal">/ night</span>
+            </div>
+            <div class="absolute bottom-4 left-4 flex items-center gap-2 text-xs text-emerald-300 uppercase tracking-widest">
+              <span class="w-1.5 h-1.5 rounded-full bg-emeraldGlow"></span>
+              <span>1,280 sq.ft • Treehouse Deck</span>
+            </div>
+          </div>
+
+          <div class="p-6 sm:p-7">
+            <h3 class="font-serif text-2xl sm:text-3xl text-white mb-2 group-hover:text-emerald-300 transition-colors">Forest Canopy Suite</h3>
+            <p class="text-sm text-gray-400 leading-relaxed mb-5">
+              Elevated amidst 100-year-old cardamom &amp; shola trees, featuring floor-to-ceiling sky windows, copper soaking tub, and private hammock terrace.
+            </p>
+          </div>
+        </div>
+
+        <div class="px-6 pb-7 pt-0 flex items-center justify-between gap-3">
+          <button onclick="openVillaModal('canopy')" class="w-full py-3 px-5 rounded-xl border border-emerald-400/40 text-emerald-200 text-sm font-medium hover:bg-emerald-400 hover:text-obsidian transition-all duration-300 flex items-center justify-center gap-2">
+            <span>View Details</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </button>
+        </div>
+      </article>
+
+      <!-- Card 3: Presidential Pavilion -->
+      <article class="reveal glass-card rounded-3xl overflow-hidden group flex flex-col justify-between transition-all duration-500 hover:-translate-y-2 hover:border-gold/50 md:col-span-2 lg:col-span-1" style="transition-delay: 200ms;">
+        <div>
+          <div class="relative h-64 sm:h-72 overflow-hidden bg-emeraldDeep">
+            <img
+              src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=85"
+              alt="Presidential Pavilion architectural sanctuary"
+              loading="lazy"
+              onerror="this.style.opacity='0.2'"
+              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/20 to-transparent"></div>
+            <div class="absolute top-4 right-4 px-3.5 py-1.5 rounded-full glass-card text-xs font-semibold text-goldLight border border-gold/40">
+              ₹78,000 <span class="text-gray-300 font-normal">/ night</span>
+            </div>
+            <div class="absolute bottom-4 left-4 flex items-center gap-2 text-xs text-goldLight uppercase tracking-widest">
+              <span class="w-1.5 h-1.5 rounded-full bg-gold"></span>
+              <span>3,400 sq.ft • Two-Bedroom Estate</span>
+            </div>
+          </div>
+
+          <div class="p-6 sm:p-7">
+            <h3 class="font-serif text-2xl sm:text-3xl text-white mb-2 group-hover:text-goldLight transition-colors">Presidential Pavilion</h3>
+            <p class="text-sm text-gray-400 leading-relaxed mb-5">
+              Our crown jewel ridge estate with a 45ft lap pool, private Ayurvedic treatment suite, wine cellar, and dedicated private chef &amp; chauffeur.
+            </p>
+          </div>
+        </div>
+
+        <div class="px-6 pb-7 pt-0 flex items-center justify-between gap-3">
+          <button onclick="openVillaModal('presidential')" class="w-full py-3 px-5 rounded-xl border border-gold/40 text-goldLight text-sm font-medium hover:bg-gold hover:text-obsidian transition-all duration-300 flex items-center justify-center gap-2">
+            <span>View Details</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </button>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ==================== 3. RESORT EXPERIENCES & AMENITIES ==================== -->
+  <section id="experiences" class="relative py-24 sm:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden">
+    <!-- Subtle Ambient Glow Behind Section -->
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-emerald-500/10 rounded-full blur-[140px] pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto relative z-10">
+      <div class="flex flex-col lg:flex-row lg:items-end justify-between mb-16 gap-6 reveal">
+        <div class="max-w-2xl">
+          <span class="text-xs uppercase tracking-[0.28em] text-gold font-semibold">Curated Immersion</span>
+          <h2 class="font-serif text-3xl sm:text-5xl font-semibold text-white mt-3">
+            Rituals of <span class="text-gold-gradient italic font-normal">Serenity &amp; Discovery</span>
+          </h2>
+        </div>
+        <p class="text-gray-400 max-w-md text-sm sm:text-base">
+          From sunrise forest bathing to candlelit spice-route tasting menus, every moment at VanaAura is thoughtfully orchestrated.
+        </p>
+      </div>
+
+      <!-- 4 Interactive Glassmorphism Experience Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- 1. Infinity Pool -->
+        <div class="reveal glass-card-emerald rounded-3xl p-7 group hover:-translate-y-2 hover:border-gold/50 transition-all duration-500 cursor-pointer" onclick="highlightExperience(this)">
+          <div class="w-14 h-14 rounded-2xl bg-emerald-500/15 border border-emerald-400/30 flex items-center justify-center text-emerald-300 mb-6 group-hover:scale-110 group-hover:bg-gold/20 group-hover:text-gold group-hover:border-gold/40 transition-all duration-300">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 16c2 0 3-1.5 4.5-1.5S10 16 12 16s3-1.5 4.5-1.5S19 16 21 16M3 20c2 0 3-1.5 4.5-1.5S10 20 12 20s3-1.5 4.5-1.5S19 20 21 20M8 12V6a2 2 0 114 0v6m4-4v4" />
+            </svg>
+          </div>
+          <h3 class="font-serif text-2xl text-white mb-2 group-hover:text-goldLight transition-colors">Infinity Pool</h3>
+          <p class="text-sm text-gray-400 leading-relaxed mb-5">
+            A 120-foot heated obsidian-slate infinity pool floating above the rolling mist of Munnar's valleys.
+          </p>
+          <div class="pt-4 border-t border-white/10 flex items-center justify-between text-xs uppercase tracking-wider text-emerald-300">
+            <span>Heated 30°C</span>
+            <span>6 AM – 10 PM</span>
+          </div>
+        </div>
+
+        <!-- 2. Ayurvedic Spa -->
+        <div class="reveal glass-card rounded-3xl p-7 group hover:-translate-y-2 hover:border-gold/60 transition-all duration-500 cursor-pointer" style="transition-delay: 80ms;" onclick="highlightExperience(this)">
+          <div class="w-14 h-14 rounded-2xl bg-gold/15 border border-gold/30 flex items-center justify-center text-gold mb-6 group-hover:scale-110 transition-all duration-300">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.5 3.5 5 6.2 5 9.5a5 5 0 11-10 0C7 9.2 9.5 6.5 12 3z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 17v4m-4-2h8" />
+            </svg>
+          </div>
+          <h3 class="font-serif text-2xl text-white mb-2 group-hover:text-goldLight transition-colors">Ayurvedic Spa</h3>
+          <p class="text-sm text-gray-400 leading-relaxed mb-5">
+            Authentic Panchakarma, Abhyanga warm herbal oil therapies, and Shirodhara guided by resident Vaidyas.
+          </p>
+          <div class="pt-4 border-t border-white/10 flex items-center justify-between text-xs uppercase tracking-wider text-goldLight">
+            <span>Resident Vaidya</span>
+            <span>90 Min Rituals</span>
+          </div>
+        </div>
+
+        <!-- 3. Fine Dining -->
+        <div class="reveal glass-card-emerald rounded-3xl p-7 group hover:-translate-y-2 hover:border-gold/50 transition-all duration-500 cursor-pointer" style="transition-delay: 160ms;" onclick="highlightExperience(this)">
+          <div class="w-14 h-14 rounded-2xl bg-emerald-500/15 border border-emerald-400/30 flex items-center justify-center text-emerald-300 mb-6 group-hover:scale-110 group-hover:bg-gold/20 group-hover:text-gold group-hover:border-gold/40 transition-all duration-300">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8 3v7a4 4 0 008 0V3M12 14v7m-4 0h8" />
+            </svg>
+          </div>
+          <h3 class="font-serif text-2xl text-white mb-2 group-hover:text-goldLight transition-colors">Fine Dining</h3>
+          <p class="text-sm text-gray-400 leading-relaxed mb-5">
+            Seven-course Malabar &amp; European tasting menus crafted with estate-foraged spices and sommelier wine pairings.
+          </p>
+          <div class="pt-4 border-t border-white/10 flex items-center justify-between text-xs uppercase tracking-wider text-emerald-300">
+            <span>Farm-to-Table</span>
+            <span>Wine Cellar</span>
+          </div>
+        </div>
+
+        <!-- 4. Guided Nature Trails -->
+        <div class="reveal glass-card rounded-3xl p-7 group hover:-translate-y-2 hover:border-gold/60 transition-all duration-500 cursor-pointer" style="transition-delay: 240ms;" onclick="highlightExperience(this)">
+          <div class="w-14 h-14 rounded-2xl bg-gold/15 border border-gold/30 flex items-center justify-center text-gold mb-6 group-hover:scale-110 transition-all duration-300">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 20l6-9 4 5 3-4 5 8H3z" />
+              <circle cx="17" cy="6" r="2" />
+            </svg>
+          </div>
+          <h3 class="font-serif text-2xl text-white mb-2 group-hover:text-goldLight transition-colors">Guided Nature Trails</h3>
+          <p class="text-sm text-gray-400 leading-relaxed mb-5">
+            Private naturalist-led treks through misty shola forests, hidden waterfalls, and heritage tea plantations.
+          </p>
+          <div class="pt-4 border-t border-white/10 flex items-center justify-between text-xs uppercase tracking-wider text-goldLight">
+            <span>Sunrise Walks</span>
+            <span>Private Guide</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 5. FOOTER WITH LOCATION MAP & CONTACT ==================== -->
+  <footer id="footer" class="border-t border-gold/20 bg-forest/80 pt-20 pb-10 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 pb-14 border-b border-white/10">
+
+        <!-- Brand & Contact Column -->
+        <div class="lg:col-span-4 space-y-6">
+          <div>
+            <span class="font-serif text-3xl font-semibold text-gold-gradient tracking-wider">VanaAura Sanctuary</span>
+            <p class="text-xs uppercase tracking-[0.26em] text-emerald-400 mt-1">Munnar • Western Ghats • Kerala</p>
+          </div>
+          <p class="text-sm text-gray-400 leading-relaxed">
+            An intimate 18-villa luxury retreat nestled at 5,800 ft above sea level amidst private emerald tea estates and cloud-kissed ridges.
+          </p>
+          <div class="space-y-3 text-sm text-gray-300">
+            <p class="flex items-center gap-3">
+              <span class="text-gold">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" /></svg>
+              </span>
+              Ridge Crest Estate, Chinnakanal, Munnar, Kerala 685618
+            </p>
+            <p class="flex items-center gap-3">
+              <span class="text-gold">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" /></svg>
+              </span>
+              +91 98765 43210 (24/7 Concierge)
+            </p>
+            <p class="flex items-center gap-3">
+              <span class="text-gold">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" /></svg>
+              </span>
+              reservations@vanaaura.com
+            </p>
+          </div>
+
+          <!-- Social Links -->
+          <div class="flex items-center gap-3 pt-2">
+            <a href="#" aria-label="Instagram" class="w-10 h-10 rounded-full glass-card flex items-center justify-center text-gray-300 hover:text-gold hover:border-gold transition">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M7.75 2h8.5A5.75 5.75 0 0122 7.75v8.5A5.75 5.75 0 0116.25 22h-8.5A5.75 5.75 0 012 16.25v-8.5A5.75 5.75 0 017.75 2zm0 2A3.75 3.75 0 004 7.75v8.5A3.75 3.75 0 007.75 20h8.5A3.75 3.75 0 0020 16.25v-8.5A3.75 3.75 0 0016.25 4h-8.5zM12 7a5 5 0 110 10 5 5 0 010-10zm0 2a3 3 0 100 6 3 3 0 000-6zm5.25-3.5a1.25 1.25 0 110 2.5 1.25 1.25 0 010-2.5z"/></svg>
+            </a>
+            <a href="#" aria-label="X / Twitter" class="w-10 h-10 rounded-full glass-card flex items-center justify-center text-gray-300 hover:text-gold hover:border-gold transition">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+            <a href="#" aria-label="YouTube" class="w-10 h-10 rounded-full glass-card flex items-center justify-center text-gray-300 hover:text-gold hover:border-gold transition">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="lg:col-span-3 space-y-4">
+          <h4 class="font-serif text-xl text-goldLight">Explore</h4>
+          <ul class="space-y-2.5 text-sm text-gray-400">
+            <li><a href="#hero" class="hover:text-gold transition">The Sanctuary</a></li>
+            <li><a href="#villas" class="hover:text-gold transition">Villas &amp; Private Estates</a></li>
+            <li><a href="#experiences" class="hover:text-gold transition">Ayurveda &amp; Wellness</a></li>
+            <li><a href="#experiences" class="hover:text-gold transition">Culinary Philosophy</a></li>
+            <li><a href="#booking" class="hover:text-gold transition">Private Transfers &amp; Helipad</a></li>
+          </ul>
+        </div>
+
+        <!-- Stylised Luxury Location Map Placeholder -->
+        <div class="lg:col-span-5">
+          <div class="glass-card rounded-3xl p-4 h-full flex flex-col justify-between">
+            <div class="relative h-56 sm:h-64 rounded-2xl overflow-hidden bg-[#07130e] border border-emerald-500/20 flex items-center justify-center">
+              <!-- Topographic Contour SVG Grid -->
+              <svg class="absolute inset-0 w-full h-full opacity-35" viewBox="0 0 400 240" fill="none">
+                <path d="M-20 190 Q90 120 200 160 T420 110" stroke="#10b981" stroke-width="1" />
+                <path d="M-20 150 Q110 80 220 120 T420 70" stroke="#10b981" stroke-width="0.8" />
+                <path d="M-20 110 Q130 40 240 80 T420 40" stroke="#d4af37" stroke-width="0.7" stroke-dasharray="4 4" />
+                <path d="M40 240 Q150 150 280 190 T410 160" stroke="#10b981" stroke-width="0.8" />
+                <circle cx="215" cy="115" r="52" stroke="#d4af37" stroke-opacity="0.3" stroke-width="1" />
+                <circle cx="215" cy="115" r="85" stroke="#10b981" stroke-opacity="0.2" stroke-width="1" />
+              </svg>
+
+              <!-- Map Pin -->
+              <div class="relative z-10 flex flex-col items-center text-center px-4">
+                <div class="w-11 h-11 rounded-full bg-gold/20 border border-gold flex items-center justify-center shadow-goldGlow mb-2">
+                  <span class="w-3.5 h-3.5 rounded-full bg-gold animate-ping absolute opacity-60"></span>
+                  <span class="w-3 h-3 rounded-full bg-gold relative"></span>
+                </div>
+                <span class="font-serif text-lg text-white">VanaAura Sanctuary</span>
+                <span class="text-xs text-emerald-300 tracking-wider">10.0369° N, 77.1872° E • Elev. 5,800 ft</span>
+              </div>
+
+              <!-- Distance Badges -->
+              <div class="absolute bottom-3 left-3 right-3 flex flex-wrap items-center justify-between gap-2 text-[11px] text-gray-300">
+                <span class="px-2.5 py-1 rounded-lg bg-obsidian/85 border border-white/10">Cochin Int'l Airport: 3.5 hrs drive</span>
+                <a href="https://maps.google.com/?q=Munnar+Kerala" target="_blank" rel="noopener noreferrer"
+                   class="px-3 py-1 rounded-lg bg-gold/20 border border-gold/50 text-goldLight hover:bg-gold hover:text-obsidian transition">
+                  Open in Maps ↗
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Copyright -->
+      <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-500">
+        <p>© <span id="year"></span> VanaAura Sanctuary Munnar. All rights reserved.</p>
+        <div class="flex items-center gap-6">
+          <a href="#" class="hover:text-gold transition">Privacy Policy</a>
+          <a href="#" class="hover:text-gold transition">Terms &amp; Cancellation</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== VILLA DETAILS MODAL ==================== -->
+  <div id="villa-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+    <div class="glass-card rounded-3xl max-w-2xl w-full overflow-hidden relative max-h-[90vh] overflow-y-auto border border-gold/40">
+      <button onclick="closeVillaModal()" aria-label="Close modal" class="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-obsidian/80 border border-white/20 text-white hover:text-gold flex items-center justify-center transition">
+        ✕
+      </button>
+
+      <div class="relative h-56 sm:h-72">
+        <img id="modal-villa-img" src="" alt="" class="w-full h-full object-cover" />
+        <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/30 to-transparent"></div>
+        <div class="absolute bottom-4 left-6 right-6 flex flex-wrap items-end justify-between gap-2">
+          <div>
+            <span id="modal-villa-size" class="text-xs uppercase tracking-[0.22em] text-emerald-300 block mb-1"></span>
+            <h3 id="modal-villa-title" class="font-serif text-3xl sm:text-4xl text-white"></h3>
+          </div>
+          <span id="modal-villa-rate" class="px-4 py-1.5 rounded-full glass-card text-goldLight font-semibold text-sm border border-gold/40"></span>
+        </div>
+      </div>
+
+      <div class="p-6 sm:p-8 space-y-6">
+        <p id="modal-villa-desc" class="text-gray-300 text-sm sm:text-base leading-relaxed"></p>
+
+        <div>
+          <h4 class="text-xs uppercase tracking-[0.22em] text-goldLight mb-3">Included Sanctuary Privileges</h4>
+          <ul id="modal-villa-amenities" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-sm text-gray-300"></ul>
+        </div>
+
+        <div class="pt-4 border-t border-white/10 flex flex-col sm:flex-row gap-3">
+          <button id="modal-reserve-btn" class="flex-1 py-3.5 px-6 rounded-xl bg-gradient-to-r from-gold to-amber-400 text-obsidian font-semibold text-sm uppercase tracking-wider hover:brightness-110 transition shadow-goldGlow">
+            Select This Villa for Booking
+          </button>
+          <button onclick="closeVillaModal()" class="py-3.5 px-6 rounded-xl border border-white/20 text-gray-300 text-sm hover:border-gold/50 transition">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== BOOKING CONFIRMATION / WHATSAPP MODAL ==================== -->
+  <div id="booking-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+    <div class="glass-card rounded-3xl max-w-lg w-full p-6 sm:p-8 relative border border-gold/50">
+      <button onclick="closeBookingModal()" aria-label="Close modal" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-obsidian/80 border border-white/20 text-white hover:text-gold flex items-center justify-center">
+        ✕
+      </button>
+
+      <div class="text-center mb-6">
+        <div class="w-14 h-14 mx-auto rounded-full bg-emerald-500/20 border border-emerald-400/50 flex items-center justify-center text-emerald-300 mb-4 shadow-emeraldGlow">
+          <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <span class="text-xs uppercase tracking-[0.25em] text-gold">Reservation Inquiry Ready</span>
+        <h3 class="font-serif text-3xl text-white mt-1">Your Sanctuary Awaits</h3>
+      </div>
+
+      <div class="rounded-2xl bg-obsidian/70 border border-white/10 p-5 space-y-3 text-sm mb-6">
+        <div class="flex justify-between"><span class="text-gray-400">Reference ID</span><span id="confirm-ref" class="text-goldLight font-mono"></span></div>
+        <div class="flex justify-between"><span class="text-gray-400">Villa Residence</span><span id="confirm-villa" class="text-white font-medium text-right"></span></div>
+        <div class="flex justify-between"><span class="text-gray-400">Check-in</span><span id="confirm-checkin" class="text-white"></span></div>
+        <div class="flex justify-between"><span class="text-gray-400">Check-out</span><span id="confirm-checkout" class="text-white"></span></div>
+        <div class="flex justify-between"><span class="text-gray-400">Guests</span><span id="confirm-guests" class="text-white"></span></div>
+        <div class="pt-3 border-t border-white/10 flex justify-between items-center">
+          <span class="text-gray-300 font-medium">Estimated Stay (<span id="confirm-nights"></span> nights)</span>
+          <span id="confirm-total" class="font-serif text-2xl text-gold-gradient font-semibold"></span>
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <a id="whatsapp-link" href="#" target="_blank" rel="noopener noreferrer"
+           class="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-semibold text-sm uppercase tracking-wider flex items-center justify-center gap-2.5 hover:brightness-110 transition shadow-emeraldGlow">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 2c-5.516 0-9.969 4.453-9.969 9.969 0 1.766.469 3.484 1.344 5l-1.406 5.156 5.281-1.375a9.92 9.92 0 004.75 1.219h.005c5.511 0 9.964-4.453 9.964-9.969S17.547 2 12.031 2zm5.813 14.125c-.25.703-1.438 1.344-2 1.422-.531.078-1.203.109-1.938-.125-.453-.141-1.031-.328-1.766-.641-3.109-1.344-5.141-4.469-5.297-4.672-.156-.203-1.266-1.688-1.266-3.219s.797-2.281 1.078-2.594c.281-.313.625-.391.828-.391.203 0 .406.016.594.016.188 0 .438-.078.688.516.25.609.859 2.094.938 2.25.078.156.125.344.016.547-.109.203-.156.344-.313.516-.156.188-.328.406-.469.547-.156.156-.313.328-.141.641.188.313.813 1.344 1.75 2.172 1.203 1.078 2.219 1.406 2.531 1.563.313.156.5.125.688-.078.188-.219.797-.922 1.016-1.234.219-.313.422-.266.719-.156.297.109 1.875.891 2.203 1.047.313.156.531.234.609.375.078.125.078.75-.172 1.453z"/></svg>
+          <span>Confirm via WhatsApp Concierge</span>
+        </a>
+        <button onclick="closeBookingModal()" class="w-full py-3 rounded-xl border border-white/15 text-gray-300 text-sm hover:border-gold/40 transition">
+          Done
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== JAVASCRIPT: THREE.JS HERO + UI LOGIC ==================== -->
+  <script>
+    // ---------- 1. THREE.JS INTERACTIVE 3D HERO SCENE ----------
+    (function initHero3D() {
+      const container = document.getElementById('hero-canvas-container');
+      if (!container || typeof THREE === 'undefined') return;
+
+      const scene = new THREE.Scene();
+      scene.fog = new THREE.FogExp2(0x050a08, 0.032);
+
+      const camera = new THREE.PerspectiveCamera(
+        55,
+        container.clientWidth / container.clientHeight,
+        0.1,
+        200
+      );
+      camera.position.set(0, 7.5, 22);
+
+      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setSize(container.clientWidth, container.clientHeight);
+      renderer.domElement.style.display = 'block';
+      renderer.domElement.style.width = '100%';
+      renderer.domElement.style.height = '100%';
+      container.appendChild(renderer.domElement);
+
+      // Master group for gentle mouse/scroll parallax tilt
+      const worldGroup = new THREE.Group();
+      scene.add(worldGroup);
+
+      // Ambient + Point Lights
+      scene.add(new THREE.AmbientLight(0x0f2f22, 1.4));
+      const goldLight = new THREE.PointLight(0xd4af37, 2.5, 60);
+      goldLight.position.set(8, 12, 10);
+      scene.add(goldLight);
+
+      const emeraldLight = new THREE.PointLight(0x10b981, 2.2, 60);
+      emeraldLight.position.set(-10, 8, 6);
+      scene.add(emeraldLight);
+
+      // Glowing Emerald Terrain Wave Mesh
+      const planeGeo = new THREE.PlaneGeometry(54, 42, 72, 56);
+      planeGeo.rotateX(-Math.PI / 2);
+
+      const originalPositions = Float32Array.from(planeGeo.attributes.position.array);
+
+      const terrainWireMat = new THREE.MeshBasicMaterial({
+        color: 0x10b981,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.28,
+      });
+      const terrainMesh = new THREE.Mesh(planeGeo, terrainWireMat);
+      terrainMesh.position.y = -3.2;
+      worldGroup.add(terrainMesh);
+
+      // Secondary Gold Crest Wave Layer
+      const goldWaveGeo = planeGeo.clone();
+      const goldWaveMat = new THREE.PointsMaterial({
+        color: 0xd4af37,
+        size: 0.14,
+        transparent: true,
+        opacity: 0.72,
+      });
+      const goldPoints = new THREE.Points(goldWaveGeo, goldWaveMat);
+      goldPoints.position.y = -3.15;
+      worldGroup.add(goldPoints);
+
+      // Floating Abstract Architectural Islands / Monoliths
+      const islandsGroup = new THREE.Group();
+      const islandConfigs = [
+        { x: -9, y: 1.4, z: -4, r: 2.2, h: 0.9, color: 0xd4af37 },
+        { x: 10, y: 2.1, z: -6, r: 2.8, h: 1.1, color: 0x10b981 },
+        { x: 0, y: 3.4, z: -11, r: 3.5, h: 1.3, color: 0xd4af37 },
+      ];
+
+      const islands = islandConfigs.map((cfg, idx) => {
+        const g = new THREE.Group();
+        const geo = new THREE.CylinderGeometry(cfg.r, cfg.r * 0.45, cfg.h, 6);
+        const mat = new THREE.MeshStandardMaterial({
+          color: 0x0a1c15,
+          metalness: 0.7,
+          roughness: 0.3,
+          emissive: cfg.color,
+          emissiveIntensity: 0.12,
+        });
+        const mesh = new THREE.Mesh(geo, mat);
+
+        const edgeGeo = new THREE.EdgesGeometry(geo);
+        const edgeMat = new THREE.LineBasicMaterial({
+          color: cfg.color,
+          transparent: true,
+          opacity: 0.55,
+        });
+        const wireframe = new THREE.LineSegments(edgeGeo, edgeMat);
+        g.add(mesh);
+        g.add(wireframe);
+
+        g.position.set(cfg.x, cfg.y, cfg.z);
+        g.userData = { baseY: cfg.y, speed: 0.7 + idx * 0.25, offset: idx * 1.8 };
+        islandsGroup.add(g);
+        return g;
+      });
+      worldGroup.add(islandsGroup);
+
+      // Floating Golden Fireflies / Mist Particles
+      const particleCount = 160;
+      const pGeo = new THREE.BufferGeometry();
+      const pPos = new Float32Array(particleCount * 3);
+      for (let i = 0; i < particleCount; i++) {
+        pPos[i * 3] = (Math.random() - 0.5) * 44;
+        pPos[i * 3 + 1] = Math.random() * 14 - 2;
+        pPos[i * 3 + 2] = (Math.random() - 0.5) * 30;
+      }
+      pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+      const pMat = new THREE.PointsMaterial({
+        color: 0xf3e5ab,
+        size: 0.16,
+        transparent: true,
+        opacity: 0.65,
+      });
+      const fireflies = new THREE.Points(pGeo, pMat);
+      worldGroup.add(fireflies);
+
+      // Mouse & Scroll Interaction State
+      let targetX = 0;
+      let targetY = 0;
+      let scrollRatio = 0;
+
+      window.addEventListener('mousemove', (e) => {
+        targetX = (e.clientX / window.innerWidth - 0.5) * 2;
+        targetY = (e.clientY / window.innerHeight - 0.5) * 2;
+      }, { passive: true });
+
+      window.addEventListener('touchmove', (e) => {
+        if (e.touches && e.touches[0]) {
+          targetX = (e.touches[0].clientX / window.innerWidth - 0.5) * 1.4;
+          targetY = (e.touches[0].clientY / window.innerHeight - 0.5) * 1.4;
+        }
+      }, { passive: true });
+
+      window.addEventListener('scroll', () => {
+        scrollRatio = Math.min(window.scrollY / window.innerHeight, 1.5);
+      }, { passive: true });
+
+      // Responsive Resize Handler
+      function onResize() {
+        const w = container.clientWidth;
+        const h = container.clientHeight;
+        if (!w || !h) return;
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+        renderer.setSize(w, h);
+      }
+      window.addEventListener('resize', onResize);
+
+      // Animation Loop
+      const clock = new THREE.Clock();
+      function animate() {
+        requestAnimationFrame(animate);
+        const t = clock.getElapsedTime();
+
+        // Update wave vertices smoothly
+        const posAttr = planeGeo.attributes.position;
+        const goldAttr = goldWaveGeo.attributes.position;
+        for (let i = 0; i < posAttr.count; i++) {
+          const ox = originalPositions[i * 3];
+          const oz = originalPositions[i * 3 + 2];
+          const wave =
+            Math.sin(ox * 0.22 + t * 0.75) * 1.15 +
+            Math.cos(oz * 0.28 + t * 0.6) * 0.95 +
+            Math.sin((ox + oz) * 0.15 + t * 0.4) * 0.55;
+          posAttr.setY(i, wave);
+          goldAttr.setY(i, wave);
+        }
+        posAttr.needsUpdate = true;
+        goldAttr.needsUpdate = true;
+
+        // Float architectural islands
+        islands.forEach((isl) => {
+          isl.position.y = isl.userData.baseY + Math.sin(t * isl.userData.speed + isl.userData.offset) * 0.45;
+          isl.rotation.y += 0.0025;
+        });
+
+        // Subtle drift on fireflies
+        fireflies.rotation.y = t * 0.025;
+
+        // Smooth tilt from mouse + scroll
+        worldGroup.rotation.y += (targetX * 0.14 - worldGroup.rotation.y) * 0.04;
+        worldGroup.rotation.x += (targetY * 0.08 + scrollRatio * 0.22 - worldGroup.rotation.x) * 0.04;
+
+        renderer.render(scene, camera);
+      }
+      animate();
+    })();
+
+    // ---------- 2. NAVBAR SCROLL & MOBILE MENU ----------
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 40) {
+        navbar.classList.add('bg-obsidian/85', 'backdrop-blur-md', 'border-b', 'border-gold/20');
+      } else {
+        navbar.classList.remove('bg-obsidian/85', 'backdrop-blur-md', 'border-b', 'border-gold/20');
+      }
+    }, { passive: true });
+
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const iconOpen = document.getElementById('menu-icon-open');
+    const iconClose = document.getElementById('menu-icon-close');
+
+    function toggleMobileMenu() {
+      const isHidden = mobileMenu.classList.contains('hidden');
+      mobileMenu.classList.toggle('hidden');
+      iconOpen.classList.toggle('hidden', isHidden);
+      iconClose.classList.toggle('hidden', !isHidden);
+    }
+    menuBtn.addEventListener('click', toggleMobileMenu);
+    document.querySelectorAll('.mobile-nav-link').forEach((link) => {
+      link.addEventListener('click', () => {
+        if (!mobileMenu.classList.contains('hidden')) toggleMobileMenu();
+      });
+    });
+
+    // ---------- 3. SMOOTH SCROLL REVEAL OBSERVER ----------
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12 }
+    );
+    revealEls.forEach((el) => observer.observe(el));
+
+    // ---------- 4. VILLA DETAILS MODAL DATA & LOGIC ----------
+    const VILLA_DATA = {
+      infinity: {
+        title: 'Infinity Pool Villa',
+        size: '1,650 sq.ft • Valley Ridge',
+        rate: '₹42,000 / night',
+        img: 'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?auto=format&fit=crop&w=1200&q=85',
+        desc: 'Designed for uninterrupted immersion in the Western Ghats, our signature Infinity Pool Villa features a cantilevered heated plunge pool, teakwood four-poster bed, outdoor rain shower, and private sunset veranda.',
+        amenities: [
+          'Heated Private Infinity Pool',
+          'Dedicated 24/7 Butler Service',
+          'Gourmet Breakfast & High Tea',
+          'Panoramic Glass Soaking Tub',
+          'Artisanal Tea & Espresso Bar',
+          'Evening Fire-Pit Turndown',
+        ],
+      },
+      canopy: {
+        title: 'Forest Canopy Suite',
+        size: '1,280 sq.ft • Shola Woodland',
+        rate: '₹34,000 / night',
+        img: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1200&q=85',
+        desc: 'Tucked high within Munnar’s aromatic cardamom canopy, this serene sanctuary pairs acoustic forest stillness with hand-crafted Rosewood furniture, skylight stargazing, and a wrap-around cedar deck.',
+        amenities: [
+          'Wrap-Around Treehouse Terrace',
+          'Hand-Hammered Copper Bath',
+          'Complimentary Guided Forest Walk',
+          'Organic Linen & Pillow Menu',
+          'Curated Acoustic Vinyl Library',
+          'Private In-Suite Dining Option',
+        ],
+      },
+      presidential: {
+        title: 'Presidential Pavilion',
+        size: '3,400 sq.ft • Private Summit Estate',
+        rate: '₹78,000 / night',
+        img: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=85',
+        desc: 'A secluded two-bedroom architectural manor crowning the highest ridge of VanaAura. Complete with a 45-foot heated lap pool, private Ayurvedic treatment room, sommelier-stocked cellar, and chauffeur-driven SUV.',
+        amenities: [
+          '45ft Heated Ridge Lap Pool',
+          'Private In-Villa Ayurvedic Suite',
+          'Dedicated Private Chef & Butler',
+          'Complimentary Kochi Luxury Transfer',
+          'Private Dining Gazebo & Cellar',
+          'Daily 60-Min Spa Therapy for Two',
+        ],
+      },
+    };
+
+    const villaModal = document.getElementById('villa-modal');
+    const modalReserveBtn = document.getElementById('modal-reserve-btn');
+    let activeModalVillaTitle = '';
+
+    function openVillaModal(key) {
+      const data = VILLA_DATA[key];
+      if (!data) return;
+      activeModalVillaTitle = data.title;
+      document.getElementById('modal-villa-img').src = data.img;
+      document.getElementById('modal-villa-img').alt = data.title;
+      document.getElementById('modal-villa-size').textContent = data.size;
+      document.getElementById('modal-villa-title').textContent = data.title;
+      document.getElementById('modal-villa-rate').textContent = data.rate;
+      document.getElementById('modal-villa-desc').textContent = data.desc;
+
+      const list = document.getElementById('modal-villa-amenities');
+      list.innerHTML = data.amenities
+        .map(
+          (item) => `
+          <li class="flex items-center gap-2">
+            <span class="w-1.5 h-1.5 rounded-full bg-gold shrink-0"></span>
+            <span>${item}</span>
+          </li>`
+        )
+        .join('');
+
+      villaModal.classList.remove('hidden');
+      villaModal.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeVillaModal() {
+      villaModal.classList.add('hidden');
+      villaModal.classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+
+    modalReserveBtn.addEventListener('click', () => {
+      const select = document.getElementById('villa-type');
+      select.value = activeModalVillaTitle;
+      closeVillaModal();
+      document.getElementById('booking').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    villaModal.addEventListener('click', (e) => {
+      if (e.target === villaModal) closeVillaModal();
+    });
+
+    // Subtle experience card active highlight
+    function highlightExperience(card) {
+      card.classList.add('ring-2', 'ring-gold/60');
+      setTimeout(() => card.classList.remove('ring-2', 'ring-gold/60'), 700);
+    }
+
+    // ---------- 5. BOOKING VALIDATION & WHATSAPP / CONFIRMATION MODAL ----------
+    const checkinInput = document.getElementById('checkin');
+    const checkoutInput = document.getElementById('checkout');
+    const bookingForm = document.getElementById('booking-form');
+    const bookingError = document.getElementById('booking-error');
+    const bookingErrorText = document.getElementById('booking-error-text');
+    const bookingModal = document.getElementById('booking-modal');
+
+    // Initialize default & min dates
+    const today = new Date();
+    const formatISO = (d) => d.toISOString().split('T')[0];
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+    const dayAfter = new Date(today);
+    dayAfter.setDate(today.getDate() + 3);
+
+    checkinInput.min = formatISO(today);
+    checkoutInput.min = formatISO(tomorrow);
+    checkinInput.value = formatISO(tomorrow);
+    checkoutInput.value = formatISO(dayAfter);
+
+    checkinInput.addEventListener('change', () => {
+      if (checkinInput.value) {
+        const nextDay = new Date(checkinInput.value);
+        nextDay.setDate(nextDay.getDate() + 1);
+        checkoutInput.min = formatISO(nextDay);
+        if (checkoutInput.value <= checkinInput.value) {
+          checkoutInput.value = formatISO(nextDay);
+        }
+      }
+    });
+
+    function showError(msg) {
+      bookingErrorText.textContent = msg;
+      bookingError.classList.remove('hidden');
+    }
+
+    function clearError() {
+      bookingError.classList.add('hidden');
+    }
+
+    bookingForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      clearError();
+
+      const checkinVal = checkinInput.value;
+      const checkoutVal = checkoutInput.value;
+      const guestsVal = document.getElementById('guests').value;
+      const villaSelect = document.getElementById('villa-type');
+      const villaVal = villaSelect.value;
+      const ratePerNight = parseInt(villaSelect.selectedOptions[0].dataset.rate, 10) || 42000;
+
+      if (!checkinVal || !checkoutVal) {
+        showError('Please select both check-in and check-out dates.');
+        return;
+      }
+
+      const dIn = new Date(checkinVal);
+      const dOut = new Date(checkoutVal);
+      const nights = Math.round((dOut - dIn) / (1000 * 60 * 60 * 24));
+
+      if (nights <= 0) {
+        showError('Check-out date must be at least one night after check-in.');
+        return;
+      }
+
+      const totalAmount = (nights * ratePerNight).toLocaleString('en-IN');
+      const refId = 'VA-' + Math.random().toString(36).substring(2, 7).toUpperCase();
+
+      // Populate confirmation modal
+      document.getElementById('confirm-ref').textContent = refId;
+      document.getElementById('confirm-villa').textContent = villaVal;
+      document.getElementById('confirm-checkin').textContent = checkinVal;
+      document.getElementById('confirm-checkout').textContent = checkoutVal;
+      document.getElementById('confirm-guests').textContent = guestsVal;
+      document.getElementById('confirm-nights').textContent = nights;
+      document.getElementById('confirm-total').textContent = '₹' + totalAmount;
+
+      // Pre-filled WhatsApp Concierge Message (Update phone number below with resort's real number)
+      const conciergePhone = '919876543210';
+      const message = `Namaste VanaAura Sanctuary Munnar!%0A%0AI would like to request a reservation:%0A• Reference: ${refId}%0A• Residence: ${villaVal}%0A• Check-in: ${checkinVal}%0A• Check-out: ${checkoutVal} (${nights} nights)%0A• Guests: ${guestsVal}%0A• Estimated Tariff: ₹${totalAmount}%0A%0APlease confirm availability.`;
+      document.getElementById('whatsapp-link').href = `https://wa.me/${conciergePhone}?text=${message}`;
+
+      bookingModal.classList.remove('hidden');
+      bookingModal.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+    });
+
+    function closeBookingModal() {
+      bookingModal.classList.add('hidden');
+      bookingModal.classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+
+    bookingModal.addEventListener('click', (e) => {
+      if (e.target === bookingModal) closeBookingModal();
+    });
+
+    // Dynamic footer year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
